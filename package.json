@@ -1,0 +1,12 @@
+{
+  "name": "opencode-model-instructions",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
