@@ -84,12 +84,21 @@ const ModelInstructionsPlugin: Plugin = async (_input, options) => {
 			for (const rule of rules) {
 				if (rule.providerID !== input.model.providerID || rule.modelID !== input.model.id) continue
 				if (matchedPaths.has(rule.pathKey)) continue
+				matchedPaths.add(rule.pathKey)
 
-				const content = await readFile(rule.resolvedPath, "utf8")
+				let content: string
+				try {
+					content = await readFile(rule.resolvedPath, "utf8")
+				} catch (error) {
+					const detail = error instanceof Error ? error.message : String(error)
+					console.warn(
+						`[opencode-model-instructions] Failed to read instruction file "${rule.resolvedPath}" for ${rule.providerID}/${rule.modelID}: ${detail}`,
+					)
+					continue
+				}
 				if (content.length > 0) {
 					output.system.push(`${instructionPrefix}${rule.resolvedPath}\n${content}`)
 				}
-				matchedPaths.add(rule.pathKey)
 			}
 		},
 	}

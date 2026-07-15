@@ -13,6 +13,7 @@ OpenCode's built-in `instructions` setting is global. This plugin adds model-awa
 - Handles instruction files already loaded by OpenCode and removes them from non-matching models.
 - Supports multiple model-to-instruction rules.
 - Reads instruction files on each matching turn, so saved changes are picked up without reinstalling the plugin.
+- Warns and skips an instruction file when it cannot be read, without failing the whole chat turn.
 - Works without publishing or installing an npm package.
 
 ## Requirements
@@ -84,6 +85,8 @@ Each rule requires three fields:
 | `instructionPath` | Absolute path, `file://` URL, or path beginning with `~/` |
 
 Rules use exact, case-sensitive provider and model matching. If several matching rules reference the same instruction file, that file is injected only once.
+
+If a matching instruction file cannot be read, the plugin writes a warning to the OpenCode process log and continues the turn without that file. Keep important instruction files in a stable, readable location.
 
 To find the IDs OpenCode resolved, inspect your configuration with:
 
